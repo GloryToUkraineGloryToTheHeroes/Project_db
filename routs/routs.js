@@ -93,7 +93,7 @@ router.post('/add', async(req, res) => {
         redirF()
         */
 
-        console.log('EEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'.red)
+        console.log('EEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'.red)
         console.log(err)
     }finally{
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
