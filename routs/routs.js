@@ -3,6 +3,9 @@ const { append } = require('express/lib/response')
 const router = Router()
 const database = require('../database/database')
 const User = require('../database/schema')
+const colors = require('colors')
+const res = require('express/lib/response')
+
 
 
 router.get('/about', (req, res) => {
@@ -10,16 +13,12 @@ router.get('/about', (req, res) => {
     res.render('about', {
         title: 'about',
         numbers: [1,2,3,4,5],
-        boolT: true
+        boolT: true,
+        isT : true
     })
 })
 
-router.get('/add', (req, res) => {
-    console.log('way - /add')
-    res.render('add', {
-        title: 'add'
-    })
-})
+
 
 
 
@@ -38,15 +37,22 @@ router.get('/', async (req, res) => {
     res.render('main', {
         title: 'main',
         docs: elems,
-        tr: true
+        tr: true,
+        isT : true
     })
 })
 
 
-var update = async function(){resultsF = await User.find({})
-console.log(resultsF)
-}
+var update = async function(){resultsF = await User.find({})}
 var Elem = {}
+
+var verif = function(){for (Doc of resultsF){
+    let eStr = Elem.name
+    if(eStr == Doc.name){
+        throw 'this name is taken'
+    }
+}}
+var errorM
 
 router.post('/add', async(req, res) => {
     try{
@@ -58,6 +64,15 @@ router.post('/add', async(req, res) => {
         Elem.name = req.body.nameTitle
         Elem.age = req.body.ageTitle
 
+        
+        await update()
+        await verif()
+
+        let aArr = Elem.age
+        if(aArr > 99 || aArr < 18){
+            throw 'Invalid age'
+        }
+
         await user.save().then(() => {
             update()
         }).then(() => {
@@ -68,11 +83,39 @@ router.post('/add', async(req, res) => {
 
         res.redirect('/')
     }catch(err){
+        
+        errorM = err
+        
+        res.redirect('/err')
+
+        /*
+        var redirF = function(){setTimeout(function(){res.redirect('/')}, 5000)}
+        redirF()
+        */
+
+        console.log('EEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'.red)
         console.log(err)
     }finally{
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         await update()
     }
+})
+
+
+router.get('/add', (req, res) => {
+    console.log('way - /add')
+    res.render('add', {
+        title: 'add',
+        isT : true
+    })
+})
+
+
+router.get('/err', (req, res) => {
+    console.log('way - /err')
+    res.render('err',{
+        errorM: errorM
+    })
 })
 
 var Result = []
@@ -122,7 +165,8 @@ router.get('/find', (req, res) => {
     console.log('way - /find')
     res.render('find', {
         title: 'find',
-        element: sendelement
+        element: sendelement,
+        isT : true
     })
 })
 
@@ -169,13 +213,14 @@ router.post('/delete', async (req, res) => {
 router.get('/delete', (req, res) => {
     console.log('way - /delete')
     res.render('delete', {
-        title: 'delete'
+        title: 'delete',
+        isT : true
     })
 })
 
 /*
 router.get('/check', (req, res) => {
-
+inputIn.value = inputIn.value.substring(0, 9);
 })
 */
 
