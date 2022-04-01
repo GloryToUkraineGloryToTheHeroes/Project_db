@@ -1,0 +1,15 @@
+
+<div>
+    <h2>Main</h2>
+</div>
+
+<div>
+    {{#if tr}}
+        <p>database values : </p>
+        <ul>
+            {{#each docs}}
+                <li><p>{{this}}</p></li>
+            {{/each}}
+        </ul>
+    {{/if}}
+</div>
