@@ -4,7 +4,6 @@ const hbs = require('hbs');
 const exhbs = require('express-handlebars')
 const router = require('./routs/routs')
 const database = require('./database/database');
-const { urlencoded } = require("express");
 
 database.run()
 
